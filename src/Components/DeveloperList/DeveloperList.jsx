@@ -9,7 +9,6 @@ const DeveloperList = () => {
       role: "Backend Developer",
       email: "shiralshethakshay@gmail.com",
       linkedin: "https://www.linkedin.com/in/akshay-shiralsheth-65b6391a6/",
-    
     },
     {
       image:
@@ -47,7 +46,7 @@ const DeveloperList = () => {
 
   return (
     <div className="developer-list">
-    <h1> Team Interactors</h1>
+      <h1> Team Interactors</h1>
       <div className="top-developers">
         {developers.slice(0, 3).map((dev, index) => (
           <div className="developer-card" key={index}>

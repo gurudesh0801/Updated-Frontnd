@@ -46,10 +46,10 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/DeveloperList" element={<DeveloperList />} />
-          <Route path="/Teacher" element={<Teacher />} />          
+          <Route path="/Teacher" element={<Teacher />} />
           <Route path="/form" element={<OtherForm />} />
-         <Route path="/Admin" element={<Admin/>} />
-         <Route path="/AdminDashboard" element={<AdminDashboard/>} />
+          <Route path="/Admin" element={<Admin />} />
+          <Route path="/AdminDashboard" element={<AdminDashboard />} />
         </Routes>
       </Layout>
     </Router>

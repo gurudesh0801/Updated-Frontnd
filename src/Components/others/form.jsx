@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from "react";
 import {
   Box,
   TextField,
@@ -10,164 +10,193 @@ import {
   Button,
   Typography,
   Grid,
-  Paper
-} from '@mui/material'
+  Paper,
+  Alert,
+} from "@mui/material";
 
+import qr1 from "../../assets/img/100.png";
+import qr2 from "../../assets/img/200.png";
+import qr3 from "../../assets/img/300.png";
+import qr4 from "../../assets/img/400.png";
+import qr5 from "../../assets/img/500.png";
+import qr6 from "../../assets/img/600.png";
+import qr7 from "../../assets/img/700.png";
+import qr8 from "../../assets/img/800.png";
 
-export default function OtherForm () {
+export default function OtherForm() {
   const qrCodes = {
-  /*  100: qr1,
+    100: qr1,
     200: qr2,
     300: qr3,
-    400: qr4,*/
-    
-  }
+    400: qr4,
+    500: qr5,
+    600: qr6,
+    700: qr7,
+    800: qr8,
+  };
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    mobile: '',
-    collegeName: '',
-    country: '',
-    state: '',
-    section: 'PG',
-    role: 'student',
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobile: "",
+    collegeName: "",
+    country: "",
+    state: "",
+    section: "PG",
+    role: "student",
     Events: [],
     amount: 0,
-    Image: null
-  })
+    Image: null,
+  });
 
-  const [errors, setErrors] = useState({})
-  const [newerrors, setNewErrors] = useState({})
-  const [qrCode, setQrCode] = useState(null)
+  const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState(""); // For API-level errors
+  const [qrCode, setQrCode] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [disableEvents, setDisableEvents] = useState(false);
 
-  const handleChange = e => {
-    const { name, value, files } = e.target
-    if (name === 'Image') {
-      setFormData(prev => ({ ...prev, [name]: files[0] }))
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "Image") {
+      setFormData((prev) => ({ ...prev, [name]: files[0] }));
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }))
+      setFormData((prev) => ({ ...prev, [name]: value }));
 
-      if (name === 'role') {
-        setFormData(prev => ({
+      if (name === "role") {
+        setFormData((prev) => ({
           ...prev,
           Events: [],
-          amount: 0
-        }))
-        setQrCode(value === 'teacher' ? qrCodes[200] : null)
+          amount: 0,
+        }));
+        setQrCode(value === "teacher" ? qrCodes[200] : null);
       }
     }
-  }
+  };
 
-  const handleCheckboxChange = e => {
-    const { value, checked } = e.target
+  const handleConfirmChange = (e) => {
+    setDisableEvents(e.target.checked);
+  };
 
-    setFormData(prev => {
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+
+    setFormData((prev) => {
       const updatedEvents = checked
         ? [...prev.Events, value]
-        : prev.Events.filter(event => event !== value)
+        : prev.Events.filter((event) => event !== value);
 
-      const updatedAmount = updatedEvents.length * 100
-      setQrCode(qrCodes[updatedAmount] || null)
+      const updatedAmount = updatedEvents.length * 100;
+      setQrCode(qrCodes[updatedAmount] || null);
 
-      return { ...prev, Events: updatedEvents, amount: updatedAmount }
-    })
-  }
+      return { ...prev, Events: updatedEvents, amount: updatedAmount };
+    });
+  };
 
   const validate = () => {
-    const newErrors = {}
+    const newErrors = {};
 
     if (!formData.firstName.trim())
-      newErrors.firstName = 'First Name is required.'
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last Name is required.'
+      newErrors.firstName = "First Name is required.";
+    if (!formData.lastName.trim())
+      newErrors.lastName = "Last Name is required.";
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required.'
+      newErrors.email = "Email is required.";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid.'
+      newErrors.email = "Email is invalid.";
     }
     if (!formData.mobile.trim()) {
-      newErrors.mobile = 'Mobile number is required.'
+      newErrors.mobile = "Mobile number is required.";
     } else if (!/^\d{10}$/.test(formData.mobile)) {
-      newErrors.mobile = 'Mobile number must be 10 digits.'
+      newErrors.mobile = "Mobile number must be 10 digits.";
     }
     if (!formData.collegeName.trim())
-      newErrors.collegeName = 'College Name is required.'
-    if (!formData.country.trim()) newErrors.country = 'Country is required.'
-    if (!formData.state.trim()) newErrors.state = 'State is required.'
-    if (formData.role === 'student' && formData.Events.length === 0) {
-      newErrors.Events = 'At least one event must be selected.'
+      newErrors.collegeName = "College Name is required.";
+    if (!formData.country.trim()) newErrors.country = "Country is required.";
+    if (!formData.state.trim()) newErrors.state = "State is required.";
+    if (formData.role === "student" && formData.Events.length === 0) {
+      newErrors.Events = "At least one event must be selected.";
     }
-    if (!formData.Image) newErrors.Image = 'Image is required.'
+    if (!formData.Image) newErrors.Image = "Image is required.";
 
-    setErrors(newErrors)
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleSubmit = async e => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsSubmitting(true);
+    setServerError("");
 
     if (!validate()) {
-      return
+      setIsSubmitting(false);
+      return;
     }
 
     const apiEndpoint =
-      formData.role === 'student'
-        ? /*`${import.meta.env.VITE_APP_BASE_URL}/api/v1/register`*/ `https://nci25.moderncollegegk.in/api/v1/register`
-        : /*`${import.meta.env.VITE_APP_BASE_URL}/api/v1/register-staff`*/ `https://nci25.moderncollegegk.in/api/v1/register-staff`
+      formData.role === "student"
+        ? `https://nci25.moderncollegegk.in/api/v1/register`
+        : `https://nci25.moderncollegegk.in/api/v1/register-staff`;
 
-    const formDataToSubmit = new FormData()
+    const formDataToSubmit = new FormData();
     for (const key in formData) {
-      if (key === 'Image' && formData[key]) {
-        formDataToSubmit.append(key, formData[key])
-      } else if (key === 'Events') {
-        formDataToSubmit.append(key, JSON.stringify(formData[key]))
+      if (key === "Image" && formData[key]) {
+        formDataToSubmit.append(key, formData[key]);
+      } else if (key === "Events") {
+        formDataToSubmit.append(key, JSON.stringify(formData[key]));
       } else {
-        formDataToSubmit.append(key, formData[key])
+        formDataToSubmit.append(key, formData[key]);
       }
     }
 
     try {
       const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        body: formDataToSubmit
-      })
+        method: "POST",
+        body: formDataToSubmit,
+      });
 
       if (response.ok) {
-        const data = await response.json()
-        alert('Form submitted successfully!',`${data}`)
+        const data = await response.json();
+        alert("Form submitted successfully!");
         setIsSubmitting(false);
       } else {
-        alert('Form submission failed!')
+        const errorData = await response.json();
+        setServerError(errorData.message || "Form submission failed!");
+        setIsSubmitting(false);
       }
     } catch (error) {
-      setNewErrors(error.message)
+      setServerError(error.message || "An error occurred during submission.");
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Paper
       elevation={3}
       sx={{
-        maxWidth: { xs: '90%', sm: '80%', md: '600px' },
-        mx: 'auto',
+        maxWidth: { xs: "90%", sm: "80%", md: "600px" },
+        mx: "auto",
         p: 3,
-        backgroundColor: 'white',
-        borderRadius: 2
+        backgroundColor: "white",
+        borderRadius: 2,
       }}
     >
-      <Box component='form' onSubmit={handleSubmit}>
-        <Typography variant='h4' textAlign='center' gutterBottom>
+      <Box component="form" onSubmit={handleSubmit}>
+        <Typography variant="h4" textAlign="center" gutterBottom>
           Registration Form
         </Typography>
+
+        {serverError && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {serverError}
+          </Alert>
+        )}
+
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              label='First Name'
-              name='firstName'
+              label="First Name"
+              name="firstName"
               value={formData.firstName}
               onChange={handleChange}
               fullWidth
@@ -178,8 +207,8 @@ export default function OtherForm () {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label='Last Name'
-              name='lastName'
+              label="Last Name"
+              name="lastName"
               value={formData.lastName}
               onChange={handleChange}
               fullWidth
@@ -190,9 +219,9 @@ export default function OtherForm () {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label='Email'
-              type='email'
-              name='email'
+              label="Email"
+              type="email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
               fullWidth
@@ -203,9 +232,9 @@ export default function OtherForm () {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label='Mobile'
-              type='tel'
-              name='mobile'
+              label="Mobile"
+              type="tel"
+              name="mobile"
               value={formData.mobile}
               onChange={handleChange}
               fullWidth
@@ -216,8 +245,8 @@ export default function OtherForm () {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label='College Name'
-              name='collegeName'
+              label="College Name"
+              name="collegeName"
               value={formData.collegeName}
               onChange={handleChange}
               fullWidth
@@ -228,8 +257,8 @@ export default function OtherForm () {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label='Country'
-              name='country'
+              label="Country"
+              name="country"
               value={formData.country}
               onChange={handleChange}
               fullWidth
@@ -240,8 +269,8 @@ export default function OtherForm () {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label='State'
-              name='state'
+              label="State"
+              name="state"
               value={formData.state}
               onChange={handleChange}
               fullWidth
@@ -252,124 +281,162 @@ export default function OtherForm () {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography variant='subtitle1'>User Type:</Typography>
+            <Typography variant="subtitle1">User Type:</Typography>
             <RadioGroup
               row
-              name='role'
+              name="role"
               value={formData.role}
               onChange={handleChange}
             >
               <FormControlLabel
-                value='student'
+                value="student"
                 control={<Radio />}
-                label='Student'
+                label="Student"
               />
               <FormControlLabel
-                value='teacher'
+                value="teacher"
                 control={<Radio />}
-                label='Teacher'
+                label="Teacher"
               />
             </RadioGroup>
           </Grid>
 
-          {formData.role === 'student' && (
+          {formData.role === "student" && (
             <>
               <Grid item xs={12}>
-                <Typography variant='subtitle1'>Education Level:</Typography>
+                <Typography variant="subtitle1">Education Level:</Typography>
                 <RadioGroup
                   row
-                  name='section'
+                  name="section"
                   value={formData.section}
                   onChange={handleChange}
                 >
-                  <FormControlLabel value='UG' control={<Radio />} label='UG' />
-                  <FormControlLabel value='PG' control={<Radio />} label='PG' />
+                  <FormControlLabel value="UG" control={<Radio />} label="UG" />
+                  <FormControlLabel value="PG" control={<Radio />} label="PG" />
                 </RadioGroup>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant='subtitle1'>Events:</Typography>
+                <Typography variant="subtitle1">Events:</Typography>
                 <FormGroup row>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        value='Int Conf'
-                        checked={formData.Events.includes('Int Conf')}
+                        value="Int Conf"
+                        checked={formData.Events.includes("Int Conf")}
                         onChange={handleCheckboxChange}
+                        disabled={disableEvents}
                       />
                     }
-                    label='International Conference'
+                    label="International Conference"
                   />
 
                   <FormControlLabel
                     control={
                       <Checkbox
-                        value='Brain Battle'
-                        checked={formData.Events.includes('Brain Battle')}
+                        value="Brain Battle"
+                        checked={formData.Events.includes("Brain Battle")}
                         onChange={handleCheckboxChange}
+                        disabled={
+                          disableEvents &&
+                          !formData.Events.includes("Brain Battle")
+                        }
                       />
                     }
-                    label='Brain Battle (Day1)'
+                    label="Brain Battle (Day1)"
                   />
 
                   <FormControlLabel
                     control={
                       <Checkbox
-                        value='Media Splash'
-                        checked={formData.Events.includes('Media Splash')}
+                        value="Media Splash"
+                        checked={formData.Events.includes("Media Splash")}
                         onChange={handleCheckboxChange}
+                        disabled={
+                          disableEvents &&
+                          !formData.Events.includes("Media Splash")
+                        }
                       />
                     }
-                    label='Media Splash (Day1)'
+                    label="Media Splash (Day1)"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        value="Gamer Strike"
+                        checked={formData.Events.includes("Gamer Strike")}
+                        onChange={handleCheckboxChange}
+                        disabled={
+                          disableEvents &&
+                          !formData.Events.includes("Gamer Strike")
+                        }
+                      />
+                    }
+                    label="Gamer Strike (Day 1)"
                   />
 
                   <FormControlLabel
                     control={
                       <Checkbox
-                        value='Wisdom War'
-                        checked={formData.Events.includes('Wisdom War')}
+                        value="Wisdom War"
+                        checked={formData.Events.includes("Wisdom War")}
                         onChange={handleCheckboxChange}
+                        disabled={
+                          disableEvents &&
+                          !formData.Events.includes("Wisdom War")
+                        }
                       />
                     }
-                    label='Wisdom War (Day1)'
+                    label="Wisdom War (Day1)"
                   />
 
                   <FormControlLabel
                     control={
                       <Checkbox
-                        value='Hack in Dark'
-                        checked={formData.Events.includes('Hack in Dark')}
+                        value="Hack in Dark"
+                        checked={formData.Events.includes("Hack in Dark")}
                         onChange={handleCheckboxChange}
+                        disabled={
+                          disableEvents &&
+                          !formData.Events.includes("Hack in Dark")
+                        }
                       />
                     }
-                    label='Hack In The Dark (Day2)'
+                    label="Hack In The Dark (Day2)"
                   />
 
                   <FormControlLabel
                     control={
                       <Checkbox
-                        value='Spark The Idea'
-                        checked={formData.Events.includes('Spark The Idea')}
+                        value="Spark The Idea"
+                        checked={formData.Events.includes("Spark The Idea")}
                         onChange={handleCheckboxChange}
+                        disabled={
+                          disableEvents &&
+                          !formData.Events.includes("Spark The Idea")
+                        }
                       />
                     }
-                    label='Spark The Idea (Day2)'
+                    label="Spark The Idea (Day2)"
                   />
 
                   <FormControlLabel
                     control={
                       <Checkbox
-                        value='Gold Rush'
-                        checked={formData.Events.includes('Gold Rush')}
+                        value="Gold Rush"
+                        checked={formData.Events.includes("Gold Rush")}
                         onChange={handleCheckboxChange}
+                        disabled={
+                          disableEvents &&
+                          !formData.Events.includes("Gold Rush")
+                        }
                       />
                     }
-                    label='Gold Rush (Day2)'
+                    label="Gold Rush (Day2)"
                   />
-
                 </FormGroup>
                 {errors.Events && (
-                  <Typography color='error' variant='body2'>
+                  <Typography color="error" variant="body2">
                     {errors.Events}
                   </Typography>
                 )}
@@ -377,8 +444,8 @@ export default function OtherForm () {
 
               <Grid item xs={12}>
                 <TextField
-                  label='Amount'
-                  name='amount'
+                  label="Amount"
+                  name="amount"
                   value={formData.amount}
                   InputProps={{ readOnly: true }}
                   fullWidth
@@ -387,48 +454,51 @@ export default function OtherForm () {
             </>
           )}
 
-          {formData.role === 'teacher' && (
+          {formData.role === "teacher" && (
             <Grid item xs={12}>
-              <Typography variant='subtitle1'>Events:</Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value='national_conference'
-                    checked={formData.Events.includes('national_conference')}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label='National Conference'
-              />
+              <Typography variant="subtitle1">Events:</Typography>
+
+              <label htmlFor="nationalConference">National Conference</label>
             </Grid>
           )}
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={disableEvents}
+                  onChange={handleConfirmChange}
+                />
+              }
+              label="Confirm selection"
+            />
+          </Grid>
           {qrCode && (
             <Grid
               item
               xs={12}
               sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                mt: 2
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mt: 2,
               }}
             >
               <Box
                 sx={{
-                  width: '300px',
-                  height: '400px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  border: '1px solid #ddd',
-                  borderRadius: '8px',
-                  overflow: 'hidden'
+                  width: "300px",
+                  height: "300px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  border: "1px solid #ddd",
+                  borderRadius: "8px",
+                  overflow: "hidden",
                 }}
               >
                 <img
                   src={qrCode}
-                  alt='QR Code'
-                  style={{ width: '100%', height: '100%' }}
+                  alt="QR Code"
+                  style={{ width: "100%", height: "100%" }}
                 />
               </Box>
             </Grid>
@@ -437,20 +507,20 @@ export default function OtherForm () {
           <Grid item xs={12}>
             <label>Upload Transaction Screenshot</label>
             <input
-              label='Upload Image'
-              type='file'
-              name='Image'
+              label="Upload Image"
+              type="file"
+              name="Image"
               onChange={handleChange}
               required
             />
           </Grid>
-          <Typography error= {newerrors} ></Typography>
+
           <Grid item xs={12}>
             <Box mt={3}>
               <Button
-                type='submit'
-                variant='contained'
-                color='primary'
+                type="submit"
+                variant="contained"
+                color="primary"
                 fullWidth
                 disabled={isSubmitting}
               >
@@ -461,5 +531,5 @@ export default function OtherForm () {
         </Grid>
       </Box>
     </Paper>
-  )
+  );
 }

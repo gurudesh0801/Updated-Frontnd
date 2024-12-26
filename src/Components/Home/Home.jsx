@@ -4,7 +4,7 @@ import Sponsors from "../Sponsers/Sponsors";
 import Header from "../Header/Header";
 
 const Home = () => {
-const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const goto = () => {
     navigate("/form");
@@ -12,9 +12,12 @@ const navigate = useNavigate();
 
   return (
     <>
-    <Header />
+      <Header />
       <div className="interaction-container">
-        <h1 className="interaction-title">National Conference on Data Science and Its Challenges Interaction 2025</h1>
+        <h1 className="interaction-title">
+          National Conference on Data Science and Its Challenges Interaction
+          2025
+        </h1>
         <button className="cta-button" onClick={goto}>
           Register
         </button>
