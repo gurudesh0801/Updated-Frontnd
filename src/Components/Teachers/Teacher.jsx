@@ -2,33 +2,55 @@ import "./Teacher.css";
 import Coordinators from "../Coordinators/Coordinators";
 import CardsGrid from "../CardsGrid/CardsGrid";
 
-
-/* Brain Battle, media splash, wisdomwar, hack in the dark, spark the idea, gold rush*/
-
 const Teacher = () => {
   const events = [
     {
-      name: "Spark The Idea",
+      name: "Brain Battle",
       teachers: [
         {
-          name: "Dr. Shubhangi Bhatambrekar (HOD)",
-          image: '',
+          name: "Dr. Sonal Kulkarni",
+          image: 'https://res.cloudinary.com/delnxjp38/image/upload/v1735146776/Sonal_Ma_am_krx1ly.png',
           contact: "",
         },
         {
-          name: "Dr.Deepak Kumbhar",
-          image:'',
+          name: "Prof. Kumod Sapkal",
+          image:'https://res.cloudinary.com/delnxjp38/image/upload/v1735146727/Kumod_sir_xunfwo.png',
           contact: "",
         },
         {
-          name: "Coord.1",
-          image: '',
+          name: "Coord. Karan Mishra",
+          image: 'https://res.cloudinary.com/delnxjp38/image/upload/v1735146704/Karan_Mishra_spzeic.png',
           contact: "+91 ",
         },
         {
-          name: "Coord.2",
+          name: "Coord. Srushti Shelke",
+          image: 'https://res.cloudinary.com/delnxjp38/image/upload/v1735146717/Shrusti_Shelke_bccuu9.png',
+          contact: "+91 ",
+        },
+      ],
+    },
+    {
+      name: "Media Splash",
+      teachers: [
+        {
+          name: "Dr. Vaishali Salunke",
           image: '',
-          contact: "+91 9766115881",
+          contact: "",
+        },
+        {
+          name: "Prof. Rajashree Umrani",
+          image: '',
+          contact: "",
+        },
+        {
+          name: "Coord. Mukta Bedekar",
+          image: "https://res.cloudinary.com/delnxjp38/image/upload/v1735146710/Mukta_Bedekar_z2dnyl.png",
+          contact: "+91 ",
+        },
+        {
+          name: "Coord. Shravani Adhav",
+          image: "https://res.cloudinary.com/delnxjp38/image/upload/v1735146715/Shravani_Adhav_whn9ck.png",
+          contact: "+91",
         },
       ],
     },
@@ -37,122 +59,97 @@ const Teacher = () => {
       teachers: [
         {
           name: "Dr. Satish Ambike",
+          image: 'https://res.cloudinary.com/delnxjp38/image/upload/v1735146772/Satish_Sir_vypted.png',
+          contact: "",
+        },
+        {
+          name: "Prof. Pradnya Patil",
           image: '',
           contact: "",
         },
         {
-          name: "Prof. Meenal Jabde",
-          image: '',
-          contact: "",
+          name: "Coord. Arati Giri",
+          image: "https://res.cloudinary.com/delnxjp38/image/upload/v1735146705/Arti_Giri_ldtiav.png",
+          contact: "+91",
         },
         {
-          name: "Coord. Pratiksha Jangam",
-          image: "",
-          contact: "+91 7701990217",
-        },
-        {
-          name: "Coord. Avantika Sahane",
-          image: "",
-          contact: "+91 8975774225",
-        },
-      ],
-    },
-    {
-      name: "Gamer Strike",
-      teachers: [
-        {
-          name: "Dr. Shubhangi Bhatambrekar (HOD)",
-          image: '',
-          contact: "",
-        },
-        {
-          name: "Prof. Ranjana Shevkar",
-          image: '',
-          contact: "",
-        },
-        {
-          name: "Coord. Prasad Deshpande",
-          image: "path/to/image3.jpg",
-          contact: "+91 8788088130",
-        },
-        {
-          name: "Coord. Dhananjay Kakade",
-          image: "path/to/image4.jpg",
-          contact: "+91 9766115881",
-        },
-      ],
-    },
-    {
-      name: "Gamer Strike",
-      teachers: [
-        {
-          name: "Dr. Shubhangi Bhatambrekar (HOD)",
-          image: '',
-          contact: "",
-        },
-        {
-          name: "Prof. Ranjana Shevkar",
-          image: '',
-          contact: "",
-        },
-        {
-          name: "Coord. Prasad Deshpande",
-          image: "path/to/image3.jpg",
-          contact: "+91 8788088130",
-        },
-        {
-          name: "Coord. Dhananjay Kakade",
-          image: "path/to/image4.jpg",
-          contact: "+91 9766115881",
-        },
-      ],
-    },
-    {
-      name: "Gamer Strike",
-      teachers: [
-        {
-          name: "Dr. Shubhangi Bhatambrekar (HOD)",
-          image: '',
-          contact: "",
-        },
-        {
-          name: "Prof. Ranjana Shevkar",
-          image: '',
-          contact: "",
-        },
-        {
-          name: "Coord. Prasad Deshpande",
-          image: "path/to/image3.jpg",
-          contact: "+91 8788088130",
-        },
-        {
-          name: "Coord. Dhananjay Kakade",
-          image: "path/to/image4.jpg",
-          contact: "+91 9766115881",
-        },
-      ],
-    },
-    {
-      name: "Gamer Strike",
-      teachers: [
-        {
-          name: "Dr. Shubhangi Bhatambrekar (HOD)",
-          image: '',
-          contact: "",
-        },
-        {
-          name: "Prof. Ranjana Shevkar",
-          image: '',
-          contact: "",
-        },
-        {
-          name: "Coord. Prasad Deshpande",
+          name: "Coord. Aishwarya Jaybhay",
           image: "",
           contact: "+91 ",
         },
+      ],
+    },
+    {
+      name: "Hack In The Dark",
+      teachers: [
         {
-          name: "Coord. Dhananjay Kakade",
-          image: "",
+          name: "Prof. Ashwini Pawar",
+          image: 'https://res.cloudinary.com/delnxjp38/image/upload/v1735146720/Ashwini_Ma_am_tepkhh.png',
+          contact: "",
+        },
+        {
+          name: "Prof. Sonali Pathade",
+          image: '',
+          contact: "",
+        },
+        {
+          name: "Coord. Sakshee Lolgay",
+          image: "https://res.cloudinary.com/delnxjp38/image/upload/v1735146712/Sakshi_Lolgay_lx940y.png",
+          contact: "+91",
+        },
+        {
+          name: "Coord. Sakshi Salunke",
+          image: "https://res.cloudinary.com/delnxjp38/image/upload/v1735146713/Sakshi_Salunkhe_dy2cad.png",
+          contact: "+91 ",
+        },
+      ],
+    },
+    {
+      name: "Spark The Idea",
+      teachers: [
+        {
+          name: "Dr. Deepak Kumbhar",
+          image: '',
+          contact: "",
+        },
+        {
+          name: "Dr. Shubhangi Bhatambrekar",
+          image: 'https://res.cloudinary.com/delnxjp38/image/upload/v1735146724/HOD_Ma_am_l1l01k.png',
+          contact: "",
+        },
+        {
+          name: "Coord. Abhishek Bhujbal",
+          image: "https://res.cloudinary.com/delnxjp38/image/upload/v1735146701/Abhishek_Bhujbal_qixkbu.png",
+          contact: "+91 ",
+        },
+        {
+          name: "Coord. Shreyash Baber",
+          image: "https://res.cloudinary.com/delnxjp38/image/upload/v1735146714/Sheraysh_Babar_bchjxn.png",
+          contact: "+91 ",
+        },
+      ],
+    },
+    {
+      name: "Gold Rush",
+      teachers: [
+        {
+          name: "Prof. Rutuja Mokashi",
+          image: 'https://res.cloudinary.com/delnxjp38/image/upload/v1735146734/Rutuja_Ma_am_eccjvz.png',
+          contact: "",
+        },
+        {
+          name: "Prof. Shashikala Jadhav",
+          image: '',
+          contact: "",
+        },
+        {
+          name: "Coord. Dhanashree Pawar",
+          image: "https://res.cloudinary.com/delnxjp38/image/upload/v1735146702/Dhanashree_Pawar_brpvcu.png",
+          contact: "+91 ",
+        },
+        {
+          name: "Coord. Sakshi Jagtap",
+          image: "https://res.cloudinary.com/delnxjp38/image/upload/v1735146707/Sakshi_Jagtap_vnrllg.png",
           contact: "+91",
         },
       ],
